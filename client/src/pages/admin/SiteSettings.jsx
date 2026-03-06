@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../utils/api';
+import ImageUpload from '../../components/ImageUpload';
+
+const Field = ({ label, name, placeholder, value, onChange, type = 'text' }) => (
+    <div className="form-group">
+        <label className="form-label">{label}</label>
+        <input type={type} name={name} className="form-input" placeholder={placeholder} value={value || ''} onChange={onChange} />
+    </div>
+);
 
 export default function SiteSettings() {
     const [form, setForm] = useState({
@@ -31,13 +39,6 @@ export default function SiteSettings() {
         }
     };
 
-    const Field = ({ label, name, placeholder, type = 'text' }) => (
-        <div className="form-group">
-            <label className="form-label">{label}</label>
-            <input type={type} name={name} className="form-input" placeholder={placeholder} value={form[name] || ''} onChange={handleChange} />
-        </div>
-    );
-
     return (
         <div>
             <div style={{ marginBottom: '32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -51,38 +52,79 @@ export default function SiteSettings() {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                     <div className="card" style={{ padding: '28px' }}>
                         <h3 style={{ fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>Branding</h3>
-                        <Field label="Logo URL" name="logo" placeholder="https://..." />
-                    </div>
-                    <div className="card" style={{ padding: '28px' }}>
-                        <h3 style={{ fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>Contact Info</h3>
-                        <Field label="Address" name="address" placeholder="123 Street, City" />
-                        <Field label="Phone" name="phone" placeholder="+1 234 567 890" />
-                        <Field label="Email" name="email" placeholder="info@company.com" type="email" />
+                        <ImageUpload
+                            label="Logo"
+                            value={form.logo}
+                            onChange={(val) => setForm(f => ({ ...f, logo: val }))}
+                        />
                     </div>
                 </div>
+
                 <div className="card" style={{ padding: '28px', marginTop: '24px' }}>
-                    <h3 style={{ fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>Social Links</h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                        <Field label="Facebook" name="facebook" placeholder="https://facebook.com/..." />
-                        <Field label="Twitter" name="twitter" placeholder="https://twitter.com/..." />
-                        <Field label="Instagram" name="instagram" placeholder="https://instagram.com/..." />
-                        <Field label="LinkedIn" name="linkedin" placeholder="https://linkedin.com/..." />
-                    </div>
-                </div>
-                <div className="card" style={{ padding: '28px', marginTop: '24px' }}>
-                    <h3 style={{ fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>Footer Legal Links</h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                        <Field label="Privacy Policy Link" name="privacy_link" placeholder="/privacy-policy" />
-                        <Field label="Terms & Conditions Link" name="terms_link" placeholder="/terms" />
-                    </div>
-                </div>
-                <div className="card" style={{ padding: '28px', marginTop: '24px' }}>
-                    <h3 style={{ fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>CTA Panel Section</h3>
-                    <Field label="Adjacent Image URL" name="cta_section_image" placeholder="https://..." />
+                    <h3 style={{ fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>Category Section Heading</h3>
                     <div className="form-group">
-                        <label className="form-label">Adjacent Text</label>
-                        <textarea name="cta_section_text" className="form-input" placeholder="Describe your services..." value={form.cta_section_text || ''} onChange={handleChange} />
+                        <label className="form-label">Main Title</label>
+                        <textarea name="category_title" className="form-input" placeholder="Custom Printing Made..." value={form.category_title || ''} onChange={handleChange} />
                     </div>
+                    <div className="form-group">
+                        <label className="form-label">Description Text</label>
+                        <textarea name="category_description" className="form-input" placeholder="Looking for a print shop..." value={form.category_description || ''} onChange={handleChange} />
+                    </div>
+                </div>
+
+                <div className="card" style={{ padding: '28px', marginTop: '24px' }}>
+                    <h3 style={{ fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>Services Section Heading</h3>
+                    <div className="form-group">
+                        <label className="form-label">Main Title</label>
+                        <textarea name="services_title" className="form-input" placeholder="Complete Print & Design..." value={form.services_title || ''} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Description Text</label>
+                        <textarea name="services_description" className="form-input" placeholder="We offer professional..." value={form.services_description || ''} onChange={handleChange} />
+                    </div>
+                </div>
+
+                <div className="card" style={{ padding: '28px', marginTop: '24px' }}>
+                    <h3 style={{ fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>Testimonials Section Heading</h3>
+                    <div className="form-group">
+                        <label className="form-label">Main Title</label>
+                        <textarea name="testimonials_title" className="form-input" placeholder="What Our Customers Say" value={form.testimonials_title || ''} onChange={handleChange} />
+                    </div>
+                </div>
+
+
+                <div className="card" style={{ padding: '28px', marginTop: '24px' }}>
+                    <h3 style={{ fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>Quick Actions (CTA) Section</h3>
+                    <div className="form-group">
+                        <label className="form-label">Main Title</label>
+                        <textarea name="cta_title" className="form-input" placeholder="Need Reliable & Budget-Friendly..." value={form.cta_title || ''} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Description Text</label>
+                        <textarea name="cta_description" className="form-input" placeholder="We’re here to make..." value={form.cta_description || ''} onChange={handleChange} />
+                    </div>
+                    <ImageUpload
+                        label="Section Image"
+                        value={form.cta_section_image}
+                        onChange={(val) => setForm(f => ({ ...f, cta_section_image: val }))}
+                    />
+                </div>
+
+                <div className="card" style={{ padding: '28px', marginTop: '24px' }}>
+                    <h3 style={{ fontWeight: 700, marginBottom: '24px', color: 'var(--text-primary)' }}>Newsletter Section</h3>
+                    <div className="form-group">
+                        <label className="form-label">Main Title</label>
+                        <textarea name="newsletter_title" className="form-input" placeholder="Subscribe for exclusive deals..." value={form.newsletter_title || ''} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Description Text</label>
+                        <textarea name="newsletter_description" className="form-input" placeholder="Join our mailing list..." value={form.newsletter_description || ''} onChange={handleChange} />
+                    </div>
+                    <ImageUpload
+                        label="Side Image"
+                        value={form.newsletter_image}
+                        onChange={(val) => setForm(f => ({ ...f, newsletter_image: val }))}
+                    />
                 </div>
                 <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-end' }}>
                     <button type="submit" className="btn-primary" disabled={saving} style={{ padding: '14px 36px', fontSize: '1rem' }}>

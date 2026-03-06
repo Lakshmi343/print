@@ -1,143 +1,159 @@
 import { Link } from 'react-router-dom';
+import { FileText, MapPin, Upload, Phone } from 'lucide-react';
 
-const actionIcons = {
-    'Request a Quote': '📋',
-    'Visit Our Shops': '🏪',
-    'Upload Your Files': '📤',
-    'Call Us': '📞',
+const actionIconMap = {
+  'Request a Quote': <FileText size={20} />,
+  'Request a Quotes': <FileText size={20} />,
+  'Visit Our Shops': <MapPin size={20} />,
+  'Upload Your Files': <Upload size={20} />,
+  'Call Us': <Phone size={20} />,
 };
 
 export default function CTAPanel({ ctaButtons, settings }) {
-    if (!ctaButtons) return null;
+  if (!ctaButtons) return null;
 
-    return (
-        <section className="cta-panel-section">
-            <div className="container">
-                <div className="cta-inner">
-                    {/* Left: Image + Text */}
-                    <div className="cta-left">
-                        <div className="cta-image-wrap">
-                            {settings?.cta_section_image ? (
-                                <img src={settings.cta_section_image} alt="" className="cta-image" />
-                            ) : (
-                                <div className="cta-image-placeholder">
-                                    <span style={{ fontSize: '5rem' }}>🎨</span>
-                                    <span style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginTop: '12px' }}>We print your dreams</span>
-                                </div>
-                            )}
-                        </div>
-                        {settings?.cta_section_text && (
-                            <p className="cta-text">{settings.cta_section_text}</p>
-                        )}
-                    </div>
+  const title = settings?.cta_title || 'Need Reliable & Budget-Friendly Printing?';
+  const description = settings?.cta_description || 'We’re here to make your next project simple, smooth, and hassle-free.';
 
-                    {/* Right: Buttons */}
-                    <div className="cta-right">
-                        <div className="section-tag" style={{ marginBottom: '16px' }}>Quick Actions</div>
-                        <h2 className="section-title" style={{ textAlign: 'left', marginBottom: '12px', fontSize: '2rem' }}>
-                            Ready to <span>Get Started?</span>
-                        </h2>
-                        <p className="section-desc" style={{ textAlign: 'left', margin: '0 0 32px', maxWidth: 'none' }}>
-                            Take the next step toward your perfect print. Choose an option below.
-                        </p>
-                        <div className="cta-buttons-grid">
-                            {ctaButtons.map(btn => (
-                                <Link key={btn.id} to={btn.link} className="cta-action-btn">
-                                    <span className="cta-btn-icon">{actionIcons[btn.label] || '→'}</span>
-                                    <span className="cta-btn-label">{btn.label}</span>
-                                    <span className="cta-btn-arrow">→</span>
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
+  return (
+    <section className="cta-section-model">
+      <div className="container">
+        <div className="cta-grid-model">
+          {/* Left: Quick Action Buttons */}
+          <div className="cta-buttons-col">
+            {ctaButtons.map(btn => (
+              <Link key={btn.id} to={btn.link} className="cta-black-card">
+                <span className="cta-card-icon">
+                  {actionIconMap[btn.label] || <FileText size={20} />}
+                </span>
+                <span className="cta-card-label">{btn.label}</span>
+              </Link>
+            ))}
+          </div>
+
+          {/* Right: Content Section */}
+          <div className="cta-content-col">
+            <div className="cta-img-card">
+              {settings?.cta_section_image ? (
+                <img src={settings.cta_section_image} alt="Quick Action" />
+              ) : (
+                <div className="cta-img-placeholder">
+                  <span style={{ fontSize: '3rem' }}>🤝</span>
                 </div>
+              )}
             </div>
 
-            <style>{`
-        .cta-panel-section {
-          padding: 100px 0;
-          background: var(--bg-card);
-          position: relative;
-          overflow: hidden;
-        }
-        .cta-panel-section::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(ellipse 50% 60% at 20% 50%, rgba(232,160,0,0.06) 0%, transparent 70%);
-          pointer-events: none;
-        }
-        .cta-inner {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 80px;
-          align-items: center;
-        }
-        .cta-image-wrap {
-          border-radius: var(--radius-lg);
-          overflow: hidden;
-          aspect-ratio: 4/3;
-          background: var(--surface);
-          border: 1px solid var(--border);
-        }
-        .cta-image { width: 100%; height: 100%; object-fit: cover; }
-        .cta-image-placeholder {
-          width: 100%; height: 100%;
-          display: flex; flex-direction: column;
-          align-items: center; justify-content: center;
-        }
-        .cta-text {
-          margin-top: 20px;
-          font-size: 0.95rem;
-          color: var(--text-secondary);
-          line-height: 1.8;
-        }
-        .cta-buttons-grid {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        .cta-action-btn {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          background: var(--bg-dark);
-          border: 1px solid var(--border);
-          border-radius: var(--radius);
-          padding: 16px 20px;
-          transition: var(--transition);
-          color: var(--text-primary);
-          font-weight: 600;
-        }
-        .cta-action-btn:hover {
-          background: rgba(232,160,0,0.08);
-          border-color: var(--primary);
-          transform: translateX(4px);
-        }
-        .cta-btn-icon {
-          width: 40px;
-          height: 40px;
-          background: rgba(232,160,0,0.1);
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.2rem;
-          flex-shrink: 0;
-        }
-        .cta-btn-label { flex: 1; font-size: 0.95rem; }
-        .cta-btn-arrow {
-          color: var(--primary);
-          font-weight: 700;
-          opacity: 0;
-          transition: opacity 0.2s;
-        }
-        .cta-action-btn:hover .cta-btn-arrow { opacity: 1; }
-        @media (max-width: 900px) {
-          .cta-inner { grid-template-columns: 1fr; gap: 48px; }
-          .cta-inner .section-title { font-size: 1.8rem !important; }
-        }
-      `}</style>
-        </section>
-    );
+            <div className="cta-body">
+              <h2 className="cta-main-title">
+                {title.includes('Reliable & Budget-Friendly') ? (
+                  <>
+                    {title.split('Reliable & Budget-Friendly')[0]}
+                    <span className="cta-title-bold">Reliable & Budget-Friendly</span>
+                    {title.split('Reliable & Budget-Friendly')[1]}
+                  </>
+                ) : title}
+              </h2>
+              <p className="cta-main-desc">{description}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+                .cta-section-model {
+                    padding: 80px 0;
+                    background-color: #ffffff;
+                }
+                .cta-grid-model {
+                    display: grid;
+                    grid-template-columns: 0.8fr 1.2fr;
+                    gap: 60px;
+                    align-items: flex-start;
+                }
+
+                .cta-buttons-col {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                }
+                .cta-black-card {
+                    background-color: #111111;
+                    padding: 24px 30px;
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    text-decoration: none;
+                    border: 1px solid #111111;
+                    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+                }
+                .cta-black-card:hover {
+                    background-color: #000000;
+                    transform: translateX(5px);
+                    border-color: #000000;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+                .cta-card-icon {
+                    color: #ffffff;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .cta-card-label {
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.95rem;
+                    font-weight: 600;
+                    color: #ffffff;
+                }
+
+                .cta-content-col {
+                    display: flex;
+                    flex-direction: column;
+                }
+                .cta-img-card {
+                    width: 100%;
+                    aspect-ratio: 16/7;
+                    overflow: hidden;
+                    background-color: #f9f9f9;
+                    margin-bottom: 35px;
+                    border: 1px solid #e2e2e2;
+                }
+                .cta-img-card img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+                .cta-img-placeholder {
+                    width: 100%; height: 100%;
+                    display: flex; align-items: center; justify-content: center;
+                }
+
+                .cta-body {
+                    max-width: 600px;
+                }
+                .cta-main-title {
+                    font-family: 'Inter', sans-serif;
+                    font-size: clamp(2rem, 3.5vw, 3.5rem);
+                    font-weight: 300;
+                    color: #111111;
+                    line-height: 1.1;
+                    margin-bottom: 20px;
+                    letter-spacing: -0.02em;
+                }
+                .cta-title-bold { font-weight: 800; }
+                
+                .cta-main-desc {
+                    font-family: 'Inter', sans-serif;
+                    font-size: 1.05rem;
+                    color: #555555;
+                    line-height: 1.6;
+                }
+
+                @media (max-width: 1024px) {
+                    .cta-grid-model { grid-template-columns: 1fr; gap: 40px; }
+                    .cta-buttons-col { order: 2; }
+                    .cta-content-col { order: 1; }
+                }
+            `}</style>
+    </section>
+  );
 }

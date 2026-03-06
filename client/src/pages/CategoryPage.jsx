@@ -21,40 +21,68 @@ export default function CategoryPage() {
 
     if (loading) return <div className="loading" style={{ minHeight: '100vh' }}><div className="spinner" /></div>;
 
+    const settings = homeData?.settings || {};
+    const title = settings?.category_title || 'Custom Printing Made Simple and Reliable';
+    const description = settings?.category_description || 'Looking for a print shop that brings your ideas to life? You’re in the right place. We offer digital printing services tailored for startups, contractors, and small businesses—making your project seamless from design to print and delivery.';
+
     return (
         <>
             <Header data={homeData} />
-            <main style={{ paddingTop: '100px', minHeight: '80vh' }}>
-                <div className="container" style={{ padding: '80px 24px' }}>
+            <main style={{ paddingTop: '80px', minHeight: '80vh', backgroundColor: '#ffffff' }}>
+                <div className="container" style={{ padding: '80px 0' }}>
+                   
+                    <div className="category-header-split" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '80px', gap: '60px' }}>
+                        <div style={{ flex: 1.2 }}>
+                            <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, lineHeight: 1.1, color: '#111', letterSpacing: '-0.02em' }}>
+                                {title.includes('Simple') ? (
+                                    <>
+                                        {title.split('Simple')[0]}
+                                        <br />
+                                        Simple
+                                        {title.split('Simple')[1]}
+                                    </>
+                                ) : title}
+                            </h2>
+                        </div>
+                        
+                    </div>
+
                     {category ? (
-                        <>
-                            <div style={{ marginBottom: '48px' }}>
-                                <div className="section-tag">{category.name}</div>
-                                <h1 className="section-title" style={{ marginTop: '16px', textAlign: 'left' }}>
-                                    {category.name} <span>Products</span>
-                                </h1>
-                            </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
                             <div style={{
-                                background: 'var(--bg-card)', border: '1px solid var(--border)',
-                                borderRadius: 'var(--radius-lg)', overflow: 'hidden',
-                                maxWidth: '600px', marginBottom: '32px'
+                                background: '#111', border: '1px solid rgba(0,0,0,0.1)',
+                                borderRadius: '4px', overflow: 'hidden',
+                                aspectSquare: '1/1'
                             }}>
-                                <img src={category.image} alt={category.name} style={{ width: '100%', height: '300px', objectFit: 'cover' }} />
+                                <img src={category.image} alt={category.name} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
                             </div>
-                            <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.8, maxWidth: '600px' }}>
-                                Browse our selection of premium {category.name.toLowerCase()} with custom branding options.
-                                High quality materials, fast turnaround, and competitive pricing.
-                            </p>
-                            <div style={{ marginTop: '32px', display: 'flex', gap: '16px' }}>
-                                <a href="/quote" className="btn-primary">Request a Quote →</a>
-                                <a href="/products" className="btn-outline">View All Products</a>
+
+                            <div>
+                                <h1 style={{
+                                    fontFamily: 'Inter, sans-serif',
+                                    fontSize: '3.5rem',
+                                    fontWeight: 800,
+                                    color: '#111',
+                                    lineHeight: 1.1,
+                                    marginBottom: '24px'
+                                }}>
+                                    {category.name.toUpperCase()}
+                                </h1>
+                                <p style={{ color: '#666', fontSize: '1.1rem', lineHeight: 1.7, marginBottom: '40px', maxWidth: '500px' }}>
+                                    Elevate your brand with our premium {category.name.toLowerCase()} solutions.
+                                    Built for durability and designed for maximum impact, making your business stand out from the competition.
+                                </p>
+                                <div style={{ display: 'flex', gap: '16px' }}>
+                                    <Link to="/quote" className="btn-primary" style={{ padding: '14px 32px', borderRadius: '40px', fontWeight: 600 }}>Get Started →</Link>
+                                    <Link to="/" className="btn-outline" style={{ padding: '14px 32px', borderRadius: '40px', color: '#111', border: '1px solid #ddd' }}>Back to Categories</Link>
+                                </div>
                             </div>
-                        </>
+                        </div>
                     ) : (
                         <div style={{ textAlign: 'center', padding: '80px 0' }}>
                             <span style={{ fontSize: '3rem' }}>🔍</span>
-                            <h2 style={{ marginTop: '16px', color: 'var(--text-secondary)' }}>Category not found</h2>
-                            <a href="/products" className="btn-primary" style={{ marginTop: '24px', display: 'inline-flex' }}>Browse All Products</a>
+                            <h2 style={{ marginTop: '16px', color: '#111' }}>Category not found</h2>
+                            <Link to="/" className="btn-primary" style={{ marginTop: '24px', display: 'inline-flex' }}>Back to Home</Link>
                         </div>
                     )}
                 </div>

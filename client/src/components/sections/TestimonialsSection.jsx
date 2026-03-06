@@ -1,121 +1,151 @@
-export default function TestimonialsSection({ testimonials }) {
-    if (!testimonials || testimonials.length === 0) return null;
+import { Star } from 'lucide-react';
 
-    const renderStars = (rating) => '★'.repeat(rating) + '☆'.repeat(5 - rating);
+export default function TestimonialsSection({ testimonials, settings }) {
+  if (!testimonials || testimonials.length === 0) return null;
 
-    return (
-        <section className="testimonials-section">
-            <div className="container">
-                <div className="section-header">
-                    <div className="section-tag">Reviews</div>
-                    <h2 className="section-title">What Our <span>Clients Say</span></h2>
-                    <p className="section-desc">Don't just take our word for it — hear from our satisfied customers.</p>
+  const title = settings?.testimonials_title || 'What Our Customers Say';
+
+  return (
+    <section className="testimonials-section-model">
+      <div className="container">
+        {/* Heading Model - Centered with bold emphasis */}
+        <div className="testimonials-header-centered">
+          <div className="testi-header-content">
+            <h2 className="testi-main-title">
+              {title.includes('Customers') ? (
+                <>
+                  What Our <span className="testi-title-bold">Customers</span> Say
+                </>
+              ) : title}
+            </h2>
+          </div>
+        </div>
+
+        {/* Grid Model - 3 Columns */}
+        <div className="testimonials-grid-model">
+          {testimonials.map(t => (
+            <div key={t.id} className="testi-card-minimal">
+              <div className="testi-card-top">
+                <h4 className="testi-user-name">{t.name}</h4>
+                <div className="testi-stars-row">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      size={12}
+                      fill={i < t.rating ? "#ffc107" : "none"}
+                      stroke={i < t.rating ? "#ffc107" : "#333"}
+                    />
+                  ))}
                 </div>
+              </div>
 
-                <div className="testimonials-grid">
-                    {testimonials.map(t => (
-                        <div key={t.id} className="testimonial-card">
-                            <div className="testi-quote">❝</div>
-                            <p className="testi-text">{t.review}</p>
-                            <div className="testi-footer">
-                                <div className="testi-avatar">{t.name.charAt(0).toUpperCase()}</div>
-                                <div>
-                                    <div className="testi-name">{t.name}</div>
-                                    <div className="stars">{renderStars(t.rating)}</div>
-                                </div>
-                                <div className="testi-date">
-                                    {new Date(t.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+              <p className="testi-user-review">
+                {t.review}
+              </p>
+
+              <div className="testi-card-bottom">
+                <span className="testi-timestamp">2 months</span>
+              </div>
             </div>
+          ))}
+        </div>
+      </div>
 
-            <style>{`
-        .testimonials-section {
-          padding: 100px 0;
-          background: var(--bg-dark);
-          position: relative;
-          overflow: hidden;
-        }
-        .testimonials-section::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
-        }
-        .testimonials-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
-        }
-        .testimonial-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border);
-          border-radius: var(--radius-lg);
-          padding: 32px;
-          transition: var(--transition);
-          position: relative;
-        }
-        .testimonial-card:hover {
-          border-color: var(--border-accent);
-          transform: translateY(-4px);
-          box-shadow: var(--shadow-lg);
-        }
-        .testi-quote {
-          font-size: 3rem;
-          color: var(--primary);
-          opacity: 0.3;
-          line-height: 1;
-          margin-bottom: 12px;
-          font-family: Georgia, serif;
-        }
-        .testi-text {
-          font-size: 0.95rem;
-          color: var(--text-secondary);
-          line-height: 1.8;
-          flex: 1;
-          margin-bottom: 24px;
-        }
-        .testi-footer {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-        .testi-avatar {
-          width: 44px;
-          height: 44px;
-          background: linear-gradient(135deg, var(--primary), var(--accent));
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 700;
-          color: #000;
-          font-size: 1.1rem;
-          flex-shrink: 0;
-        }
-        .testi-name {
-          font-weight: 700;
-          font-size: 0.9rem;
-          color: var(--text-primary);
-          margin-bottom: 4px;
-        }
-        .stars { color: var(--primary); font-size: 0.85rem; }
-        .testi-date {
-          margin-left: auto;
-          font-size: 0.78rem;
-          color: var(--text-muted);
-        }
-        @media (max-width: 900px) {
-          .testimonials-grid { grid-template-columns: 1fr 1fr; }
-        }
-        @media (max-width: 580px) {
-          .testimonials-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
-        </section>
-    );
+      <style>{`
+                .testimonials-section-model {
+                    padding: 120px 0;
+                    background-color: #000000;
+                }
+                .testimonials-header-centered {
+                    text-align: center;
+                    margin-bottom: 80px;
+                }
+                .testi-main-title {
+                    font-family: 'Inter', sans-serif;
+                    font-size: clamp(2rem, 4vw, 3.8rem);
+                    font-weight: 300;
+                    color: #fff;
+                    letter-spacing: -0.02em;
+                    line-height: 1.1;
+                }
+                .testi-header-content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 30px;
+                }
+                .testi-heading-img-wrap {
+                    width: 100%;
+                    max-width: 300px;
+                    aspect-ratio: 16/9;
+                    overflow: hidden;
+                    border-radius: 4px;
+                    border: 1px solid rgba(255,255,255,0.1);
+                }
+                .testi-heading-img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+                .testi-title-bold { font-weight: 800; }
+
+                .testimonials-grid-model {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 30px;
+                }
+                .testi-card-minimal {
+                    background-color: #080808;
+                    padding: 40px;
+                    display: flex;
+                    flex-direction: column;
+                    border: 1px solid rgba(255,255,255,0.02);
+                    min-height: 280px;
+                    transition: border-color 0.3s ease;
+                }
+                .testi-card-minimal:hover {
+                    border-color: rgba(255,255,255,0.1);
+                }
+                .testi-card-top { margin-bottom: 24px; }
+                .testi-user-name {
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.85rem;
+                    font-weight: 700;
+                    color: #ffffff;
+                    margin-bottom: 8px;
+                }
+                .testi-stars-row { display: flex; gap: 3px; }
+                
+                .testi-user-review {
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.85rem;
+                    line-height: 1.7;
+                    color: #999;
+                    margin-bottom: 30px;
+                    flex: 1;
+                    font-weight: 400;
+                }
+
+                .testi-card-bottom {
+                    display: flex;
+                    align-items: center;
+                    margin-top: auto;
+                }
+                .testi-timestamp {
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    color: #444444;
+                }
+
+                @media (max-width: 1024px) {
+                    .testimonials-grid-model { grid-template-columns: 1fr 1fr; }
+                }
+                @media (max-width: 600px) {
+                    .testimonials-grid-model { grid-template-columns: 1fr; }
+                    .testi-main-title { font-size: 2.5rem; }
+                }
+            `}</style>
+    </section>
+  );
 }

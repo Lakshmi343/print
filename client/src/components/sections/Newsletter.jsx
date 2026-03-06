@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { publicApi } from '../../utils/api';
 
-export default function Newsletter() {
+export default function Newsletter({ settings }) {
     const [form, setForm] = useState({ firstName: '', lastName: '', email: '' });
     const [status, setStatus] = useState(null); // 'success' | 'error' | null
     const [msg, setMsg] = useState('');
+
+    const title = settings?.newsletter_title || 'Subscribe for exclusive deals and printing updates in your inbox.';
+    const image = settings?.newsletter_image || '';
 
     const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -23,124 +26,215 @@ export default function Newsletter() {
     };
 
     return (
-        <section className="newsletter-section">
-            <div className="container">
-                <div className="newsletter-inner">
-                    <div className="newsletter-text">
-                        <div className="section-tag">Newsletter</div>
-                        <h2 className="section-title" style={{ textAlign: 'left', fontSize: '2rem' }}>
-                            Stay <span>Updated</span> with Us
-                        </h2>
-                        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginTop: '12px' }}>
-                            Get the latest deals, design tips, and printing news delivered directly to your inbox.
-                        </p>
-                    </div>
-
-                    <form className="newsletter-form" onSubmit={handleSubmit}>
-                        <div className="nf-row">
-                            <div className="form-group">
-                                <label className="form-label">First Name</label>
-                                <input
-                                    type="text"
-                                    name="firstName"
-                                    className="form-input"
-                                    placeholder="John"
-                                    value={form.firstName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Last Name</label>
-                                <input
-                                    type="text"
-                                    name="lastName"
-                                    className="form-input"
-                                    placeholder="Doe"
-                                    value={form.lastName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label className="form-label">Email Address</label>
-                            <input
-                                type="email"
-                                name="email"
-                                className="form-input"
-                                placeholder="john@example.com"
-                                value={form.email}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        {status && (
-                            <div className={`nf-message ${status}`}>
-                                {status === 'success' ? '✅' : '❌'} {msg}
+        <section className="newsletter-section-model">
+            <div className="container" style={{ maxWidth: '1400px', padding: '0 40px' }}>
+                <div className="newsletter-grid-model">
+                    {/* Left: Branding Image */}
+                    <div className="newsletter-img-col">
+                        {image ? (
+                            <img src={image} alt="Newsletter" className="newsletter-hero-img" />
+                        ) : (
+                            <div className="newsletter-hero-placeholder">
+                                <span style={{ fontSize: '4rem' }}>✉️</span>
                             </div>
                         )}
+                    </div>
 
-                        <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', fontSize: '1rem', padding: '16px' }}>
-                            Subscribe Now ✉️
-                        </button>
-                    </form>
+                    {/* Right: Form Section */}
+                    <div className="newsletter-form-col">
+                        <div className="newsletter-form-inner">
+                            <h2 className="newsletter-main-title">
+                                {title}
+                            </h2>
+                            {settings?.newsletter_description && (
+                                <p className="newsletter-main-desc">
+                                    {settings.newsletter_description}
+                                </p>
+                            )}
+
+                            <form className="newsletter-ui-form" onSubmit={handleSubmit}>
+                                <div className="ns-input-group">
+                                    <label>First Name</label>
+                                    <input
+                                        type="text"
+                                        name="firstName"
+                                        placeholder="Your first name"
+                                        value={form.firstName}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="ns-input-group">
+                                    <label>Last Name</label>
+                                    <input
+                                        type="text"
+                                        name="lastName"
+                                        placeholder="Your last name"
+                                        value={form.lastName}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="ns-input-group">
+                                    <label>Email</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        placeholder="you@company.com"
+                                        value={form.email}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="ns-status-container">
+                                    {status && (
+                                        <div className={`ns-status-msg ${status}`}>
+                                            {msg}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <button type="submit" className="ns-submit-btn">
+                                    GET STARTED
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <style>{`
-        .newsletter-section {
-          padding: 100px 0;
-          background: var(--bg-dark);
-          position: relative;
-          overflow: hidden;
-        }
-        .newsletter-section::before {
-          content: '';
-          position: absolute;
-          right: 0; top: 0; bottom: 0;
-          width: 50%;
-          background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(232,160,0,0.06) 0%, transparent 70%);
-        }
-        .newsletter-inner {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 80px;
-          align-items: center;
-          position: relative;
-        }
-        .newsletter-text {}
-        .newsletter-form {
-          background: var(--bg-card);
-          border: 1px solid var(--border);
-          border-radius: var(--radius-lg);
-          padding: 36px;
-        }
-        .nf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .nf-message {
-          padding: 12px 16px;
-          border-radius: var(--radius);
-          font-size: 0.9rem;
-          font-weight: 500;
-          margin-bottom: 16px;
-        }
-        .nf-message.success {
-          background: rgba(76,175,80,0.1);
-          color: #4caf50;
-          border: 1px solid rgba(76,175,80,0.3);
-        }
-        .nf-message.error {
-          background: rgba(244,67,54,0.1);
-          color: #f44336;
-          border: 1px solid rgba(244,67,54,0.3);
-        }
-        @media (max-width: 900px) {
-          .newsletter-inner { grid-template-columns: 1fr; gap: 40px; }
-          .newsletter-text .section-title { font-size: 1.8rem !important; }
-          .nf-row { grid-template-columns: 1fr; }
-        }
-      `}</style>
+                .newsletter-section-model {
+                    padding: 80px 0;
+                    background-color: #ffffff;
+                }
+                .newsletter-grid-model {
+                    display: grid;
+                    grid-template-columns: 1.1fr 0.9fr;
+                    gap: 80px;
+                    align-items: center;
+                }
+
+                .newsletter-img-col {
+                    width: 100%;
+                }
+
+                .newsletter-hero-img {
+                    width: 100%;
+                    height: 600px;
+                    object-fit: cover;
+                    border-radius: 4px;
+                }
+                .newsletter-hero-placeholder {
+                    width: 100%; height: 600px;
+                    background-color: #f9f9f9;
+                    border-radius: 4px;
+                    display: flex; align-items: center; justify-content: center;
+                }
+
+                .newsletter-form-inner {
+                    max-width: 500px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    padding-right: 20px;
+                }
+
+                .newsletter-main-title {
+                    font-family: 'Inter', sans-serif;
+                    font-size: clamp(2rem, 2.5vw, 2.4rem);
+                    font-weight: 500;
+                    color: #111;
+                    line-height: 1.3;
+                    margin-bottom: 20px;
+                    letter-spacing: -0.01em;
+                }
+
+                .newsletter-main-desc {
+                    font-family: 'Inter', sans-serif;
+                    font-size: 1.05rem;
+                    color: #666;
+                    line-height: 1.6;
+                    margin-bottom: 30px;
+                }
+
+                .newsletter-ui-form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
+                }
+                .ns-input-group {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                }
+                .ns-input-group label {
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    color: #333;
+                }
+                .ns-input-group input {
+                    padding: 12px 16px;
+                    border: 1px solid #d1d1d1;
+                    border-radius: 6px;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.95rem;
+                    color: #111;
+                    outline: none;
+                    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+                }
+                .ns-input-group input::placeholder {
+                    color: #999;
+                }
+                .ns-input-group input:focus {
+                    border-color: #111;
+                    box-shadow: 0 0 0 2px rgba(17,17,17,0.1);
+                }
+
+                .ns-status-container {
+                    min-height: 20px; /* Prevents shifting when status appears */
+                }
+
+                .ns-submit-btn {
+                    margin-top: 5px;
+                    background-color: #8FD400; /* Lime green from design */
+                    color: #111;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.95rem;
+                    font-weight: 700;
+                    padding: 14px;
+                    border: none;
+                    border-radius: 6px; 
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    letter-spacing: 0.05em;
+                }
+                .ns-submit-btn:hover {
+                    background-color: #7cb342;
+                    transform: translateY(-2px);
+                }
+
+                .ns-status-msg {
+                    padding: 15px;
+                    border-radius: 4px;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                }
+                .ns-status-msg.success { background: #e8f5e9; color: #2e7d32; }
+                .ns-status-msg.error { background: #ffebee; color: #c62828; }
+
+                @media (max-width: 1024px) {
+                    .newsletter-grid-model { grid-template-columns: 1fr 1fr; gap: 40px; }
+                    .newsletter-form-inner { max-width: 100%; padding-right: 0; }
+                }
+                @media (max-width: 900px) {
+                    .newsletter-grid-model { grid-template-columns: 1fr; gap: 50px; }
+                    .newsletter-hero-img, .newsletter-hero-placeholder { height: 400px; }
+                }
+            `}</style>
         </section>
     );
 }

@@ -1,115 +1,151 @@
 import { Link } from 'react-router-dom';
 
-export default function ServicesSection({ services }) {
-    if (!services || services.length === 0) return null;
+export default function ServicesSection({ services, settings }) {
+  if (!services || services.length === 0) return null;
 
-    return (
-        <section className="services-section">
-            <div className="container">
-                <div className="section-header">
-                    <div className="section-tag">What We Offer</div>
-                    <h2 className="section-title">Our <span>Services</span></h2>
-                    <p className="section-desc">From concept to final print, we offer comprehensive services to bring your vision to life.</p>
+  const title = settings?.services_title || 'Complete Print & Design Solutions';
+  const description = settings?.services_description || 'We offer professional printing, copying, design, and bindery services tailored to your business needs—no job too big or small. Reach out or visit us to get started.';
+
+  return (
+    <section className="services-section">
+      <div className="container">
+        <div className="services-layout-wrapper">
+
+          {/* Left Column: Title & Description */}
+          <div className="svc-left-col">
+            <h2 className="svc-main-title">
+              {title.includes('Print & Design') ? (
+                <>
+                  Complete <span className="svc-title-bold">Print &</span>
+                  <br />
+                  <span className="svc-title-bold">Design</span> Solutions
+                </>
+              ) : title}
+            </h2>
+            <p className="svc-main-desc">{description}</p>
+          </div>
+
+          {/* Right Column: Grid Model - 3 Columns */}
+          <div className="services-grid-model">
+            {services.map(svc => (
+              <Link key={svc.id} to={svc.link || '#'} className="svc-item-minimal">
+                <div className="svc-img-wrapper">
+                  <img src={svc.image} alt={svc.title} />
                 </div>
-
-                <div className="services-grid">
-                    {services.map((svc, i) => (
-                        <Link key={svc.id} to={svc.link || '#'} className="service-card">
-                            <div className="svc-image-wrap">
-                                <img src={svc.image} alt={svc.title} className="svc-image" />
-                                <div className="svc-overlay" />
-                                <div className="svc-number">0{i + 1}</div>
-                            </div>
-                            <div className="svc-content">
-                                <h3 className="svc-title">{svc.title}</h3>
-                                <p className="svc-desc">{svc.description}</p>
-                                <span className="svc-link">Learn More →</span>
-                            </div>
-                        </Link>
-                    ))}
+                <div className="svc-text-content">
+                  <h3 className="svc-label-uppercase">{svc.title.toUpperCase()}</h3>
+                  <p className="svc-item-desc">{svc.description}</p>
                 </div>
-            </div>
+              </Link>
+            ))}
+          </div>
 
-            <style>{`
-        .services-section {
-          padding: 100px 0;
-          background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-card) 100%);
-        }
-        .services-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
-        }
-        .service-card {
-          display: block;
-          background: var(--bg-card2);
-          border-radius: var(--radius-lg);
-          overflow: hidden;
-          border: 1px solid var(--border);
-          transition: var(--transition);
-          position: relative;
-        }
-        .service-card:hover {
-          border-color: var(--border-accent);
-          transform: translateY(-6px);
-          box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-        }
-        .svc-image-wrap {
-          position: relative;
-          aspect-ratio: 16/9;
-          overflow: hidden;
-        }
-        .svc-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.5s ease;
-          filter: brightness(0.7);
-        }
-        .service-card:hover .svc-image { transform: scale(1.06); filter: brightness(0.5); }
-        .svc-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to top,rgba(0,0,0,0.85) 0%,transparent 50%);
-        }
-        .svc-number {
-          position: absolute;
-          top: 16px;
-          left: 16px;
-          font-family: 'Poppins', sans-serif;
-          font-weight: 900;
-          font-size: 2.5rem;
-          color: rgba(232,160,0,0.25);
-          line-height: 1;
-        }
-        .svc-content { padding: 24px; }
-        .svc-title {
-          font-family: 'Poppins', sans-serif;
-          font-size: 1.15rem;
-          font-weight: 700;
-          color: var(--text-primary);
-          margin-bottom: 10px;
-        }
-        .svc-desc {
-          font-size: 0.875rem;
-          color: var(--text-secondary);
-          line-height: 1.7;
-          margin-bottom: 16px;
-        }
-        .svc-link {
-          font-size: 0.85rem;
-          font-weight: 700;
-          color: var(--primary);
-          transition: gap 0.2s;
-        }
-        .service-card:hover .svc-link { letter-spacing: 0.03em; }
-        @media (max-width: 900px) {
-          .services-grid { grid-template-columns: 1fr 1fr; }
-        }
-        @media (max-width: 580px) {
-          .services-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
-        </section>
-    );
+        </div>
+      </div>
+
+      <style>{`
+                .services-section {
+                    padding: 100px 0;
+                    background-color: #030303;
+                    position: relative;
+                }
+                /* Grid background effect from screenshot */
+                .services-section::before {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    background-image: 
+                        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+                    background-size: 25% 250px;
+                    pointer-events: none;
+                }
+
+                .services-layout-wrapper {
+                    display: grid;
+                    grid-template-columns: 280px 1fr;
+                    gap: 60px;
+                    position: relative;
+                    z-index: 1;
+                }
+
+                .svc-left-col {
+                    display: flex;
+                    flex-direction: column;
+                }
+                .svc-main-title {
+                    font-family: 'Inter', sans-serif;
+                    font-size: clamp(2.2rem, 3vw, 2.8rem);
+                    font-weight: 300;
+                    color: #fff;
+                    line-height: 1.2;
+                    letter-spacing: -0.02em;
+                    margin-bottom: 30px;
+                }
+                .svc-title-bold { font-weight: 700; }
+                .svc-main-desc {
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.9rem;
+                    line-height: 1.7;
+                    color: #aaaaaa;
+                    font-weight: 400;
+                }
+
+                .services-grid-model {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 50px 30px;
+                }
+                .svc-item-minimal {
+                    display: flex;
+                    flex-direction: column;
+                    text-decoration: none;
+                }
+                .svc-img-wrapper {
+                    aspect-ratio: 1/1;
+                    background-color: #1a1a1a;
+                    overflow: hidden;
+                    margin-bottom: 20px;
+                }
+                .svc-img-wrapper img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                }
+                .svc-item-minimal:hover img { transform: scale(1.05); }
+                
+                .svc-label-uppercase {
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    color: #ffffff;
+                    margin-bottom: 8px;
+                    letter-spacing: 0.02em;
+                    font-stretch: condensed;
+                }
+                .svc-item-desc {
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.75rem;
+                    color: #b0b0b0;
+                    line-height: 1.5;
+                    font-weight: 400;
+                }
+
+                @media (max-width: 1100px) {
+                    .services-layout-wrapper { grid-template-columns: 240px 1fr; gap: 40px; }
+                }
+                @media (max-width: 900px) {
+                    .services-layout-wrapper { grid-template-columns: 1fr; }
+                    .services-grid-model { grid-template-columns: 1fr 1fr; }
+                    .svc-main-title { font-size: 2.8rem; }
+                    .services-section::before { background-size: 50% 250px; }
+                }
+                @media (max-width: 600px) {
+                    .services-grid-model { grid-template-columns: 1fr; }
+                    .services-section::before { background-size: 100% 250px; }
+                }
+            `}</style>
+    </section>
+  );
 }

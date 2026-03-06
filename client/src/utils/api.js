@@ -22,6 +22,13 @@ export const authApi = {
 export const adminApi = {
     getSettings: () => api.get('/admin/settings').then(r => r.data),
     updateSettings: (data) => api.put('/admin/settings', data).then(r => r.data),
+    uploadImage: (file) => {
+        const formData = new FormData();
+        formData.append('image', file);
+        return api.post('/admin/upload', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        }).then(r => r.data);
+    },
 
     getHero: () => api.get('/admin/hero').then(r => r.data),
     updateHero: (data) => api.put('/admin/hero', data).then(r => r.data),

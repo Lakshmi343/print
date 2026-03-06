@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../utils/api';
+import ImageUpload from '../../components/ImageUpload';
 
 export default function HeroManager() {
     const [form, setForm] = useState({ headline: '', subtext: '', cta_text: '', cta_link: '', bg_image: '' });
@@ -53,10 +54,11 @@ export default function HeroManager() {
                             <input name="cta_link" className="form-input" value={form.cta_link || ''} onChange={handleChange} placeholder="/quote" />
                         </div>
                     </div>
-                    <div className="form-group">
-                        <label className="form-label">Background Image URL (optional)</label>
-                        <input name="bg_image" className="form-input" value={form.bg_image || ''} onChange={handleChange} placeholder="https://..." />
-                    </div>
+                    <ImageUpload
+                        label="Background Image (optional)"
+                        value={form.bg_image}
+                        onChange={(val) => setForm(f => ({ ...f, bg_image: val }))}
+                    />
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <button type="submit" className="btn-primary" disabled={saving} style={{ padding: '13px 32px' }}>
                             {saving ? 'Saving...' : 'Save Hero ✓'}

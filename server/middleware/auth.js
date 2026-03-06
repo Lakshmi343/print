@@ -1,18 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (!token) return res.status(401).json({ message: 'Access denied' });
     try {
-        const token = req.header('Authorization')?.replace('Bearer ', '');
-
-        if (!token) {
-            return res.status(401).json({ message: 'No authentication token, access denied' });
-        }
-
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = verified;
+        req.user = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret');
         next();
-    } catch (err) {
-        res.status(401).json({ message: 'Token verification failed, authorization denied' });
+    } catch {
+        res.status(401).json({ message: 'Invalid token' });
     }
 };
 

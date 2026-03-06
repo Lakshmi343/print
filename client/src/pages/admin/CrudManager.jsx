@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { adminApi } from '../../utils/api';
+import ImageUpload from '../../components/ImageUpload';
 
 /**
  * Generic CRUD manager for list-based entities.
@@ -30,7 +31,7 @@ export default function CrudManager({ entity, title, icon, fields }) {
     const closeModal = () => { setModal(null); setForm({}); };
 
     const handleChange = e => {
-        const val = e.target.type === 'checkbox' ? (e.target.checked ? 1 : 0) : e.target.value;
+        const val = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         setForm(f => ({ ...f, [e.target.name]: val }));
     };
 
@@ -149,6 +150,12 @@ export default function CrudManager({ entity, title, icon, fields }) {
                                         <select name={f.name} className="form-input" value={form[f.name] ?? ''} onChange={handleChange} required={f.required}>
                                             {f.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                                         </select>
+                                    ) : f.type === 'img' ? (
+                                        <ImageUpload
+                                            label={f.label}
+                                            value={form[f.name] ?? ''}
+                                            onChange={(val) => setForm(prev => ({ ...prev, [f.name]: val }))}
+                                        />
                                     ) : (
                                         <input type={f.type || 'text'} name={f.name} className="form-input" placeholder={f.placeholder} value={form[f.name] ?? ''} onChange={handleChange} required={f.required} />
                                     )}

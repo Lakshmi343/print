@@ -1,190 +1,183 @@
 import { Link } from 'react-router-dom';
+import { MapPin, Phone } from 'lucide-react';
+import { RiInstagramLine, RiTwitterXLine, RiFacebookFill } from 'react-icons/ri';
 
 export default function Footer({ data }) {
-    const settings = data?.settings || {};
+  const settings = data?.settings || {};
 
-    const socials = [
-        { key: 'facebook', icon: '📘', label: 'Facebook' },
-        { key: 'twitter', icon: '🐦', label: 'Twitter' },
-        { key: 'instagram', icon: '📸', label: 'Instagram' },
-        { key: 'linkedin', icon: '💼', label: 'LinkedIn' },
-    ];
+  return (
+    <footer className="site-footer">
+      <div className="container footer-content">
+        {/* Top Section */}
+        <div className="footer-top">
+          <div className="footer-logo">
+            {settings.logo ? (
+              <img src={settings.logo} alt="Logo" />
+            ) : (
+              <span className="logo-text">LOGO</span>
+            )}
+          </div>
 
-    return (
-        <footer className="site-footer">
-            <div className="container">
-                <div className="footer-grid">
-                    {/* Brand */}
-                    <div className="footer-brand">
-                        <div className="footer-logo">
-                            {settings.logo ? (
-                                <img src={settings.logo} alt="Logo" style={{ height: '36px' }} />
-                            ) : (
-                                <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '1.3rem' }}>
-                                    🖨️ PRINT<span style={{ color: 'var(--primary)' }}>PRO</span>
-                                </span>
-                            )}
-                        </div>
-                        <p className="footer-desc">
-                            Your trusted partner for premium printing solutions. Quality, speed, and creativity in every print.
-                        </p>
-                        <div className="social-links">
-                            {socials.map(s => (
-                                settings[s.key] ? (
-                                    <a key={s.key} href={settings[s.key]} target="_blank" rel="noopener noreferrer" className="social-link" title={s.label}>
-                                        {s.icon}
-                                    </a>
-                                ) : null
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Quick Links */}
-                    <div className="footer-col">
-                        <h4 className="footer-heading">Quick Links</h4>
-                        <ul className="footer-links">
-                            <li><Link to="/">Home</Link></li>
-                            <li><Link to="/products">Products</Link></li>
-                            <li><Link to="/services">Services</Link></li>
-                            <li><Link to="/about">About Us</Link></li>
-                            <li><Link to="/contact">Contact</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Services */}
-                    <div className="footer-col">
-                        <h4 className="footer-heading">Services</h4>
-                        <ul className="footer-links">
-                            <li><Link to="/services/design">Graphic Design</Link></li>
-                            <li><Link to="/services/offset">Offset Printing</Link></li>
-                            <li><Link to="/services/large-format">Large Format</Link></li>
-                            <li><Link to="/services/digital">Digital Printing</Link></li>
-                            <li><Link to="/upload">File Upload</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Contact */}
-                    <div className="footer-col">
-                        <h4 className="footer-heading">Contact Us</h4>
-                        <ul className="footer-contact">
-                            {settings.address && <li><span>📍</span><span>{settings.address}</span></li>}
-                            {settings.phone && <li><span>📞</span><a href={`tel:${settings.phone}`}>{settings.phone}</a></li>}
-                            {settings.email && <li><span>✉️</span><a href={`mailto:${settings.email}`}>{settings.email}</a></li>}
-                        </ul>
-                    </div>
-                </div>
-
-                <div className="footer-bottom">
-                    <p>© {new Date().getFullYear()} PrintPro. All rights reserved.</p>
-                    <div className="footer-legal">
-                        <Link to={settings.privacy_link || '/privacy-policy'}>Privacy Policy</Link>
-                        <span>·</span>
-                        <Link to={settings.terms_link || '/terms'}>Terms & Conditions</Link>
-                    </div>
-                </div>
+          <div className="footer-contact-info">
+            <div className="contact-item">
+              <MapPin size={18} strokeWidth={1.5} />
+              <span>{settings.address || '123 Print Avenue, Suite 456, Creative City, ZIP 78910'}</span>
             </div>
+            <div className="contact-item">
+              <Phone size={18} strokeWidth={1.5} />
+              <span>{settings.phone || '403-230-4649'}</span>
+            </div>
+          </div>
+        </div>
 
-            <style>{`
-        .site-footer {
-          background: #0a0a0a;
-          border-top: 1px solid rgba(255,255,255,0.06);
-          padding: 80px 0 0;
-          margin-top: 0;
-        }
-        .footer-grid {
-          display: grid;
-          grid-template-columns: 2fr 1fr 1fr 1.5fr;
-          gap: 48px;
-          padding-bottom: 60px;
-        }
-        .footer-logo { margin-bottom: 16px; color: #fff; }
-        .footer-desc {
-          color: var(--text-muted);
-          font-size: 0.9rem;
-          line-height: 1.7;
-          margin-bottom: 24px;
-        }
-        .social-links { display: flex; gap: 10px; }
-        .social-link {
-          width: 38px;
-          height: 38px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: rgba(255,255,255,0.06);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 8px;
-          font-size: 1rem;
-          transition: all 0.2s;
-        }
-        .social-link:hover {
-          background: rgba(232,160,0,0.15);
-          border-color: var(--primary);
-          transform: translateY(-2px);
-        }
-        .footer-heading {
-          font-size: 0.8rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: var(--primary);
-          margin-bottom: 20px;
-        }
-        .footer-links {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-        .footer-links a {
-          color: var(--text-muted);
-          font-size: 0.9rem;
-          transition: all 0.2s;
-        }
-        .footer-links a:hover { color: var(--text-primary); padding-left: 4px; }
-        .footer-contact {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        .footer-contact li {
-          display: flex;
-          align-items: flex-start;
-          gap: 10px;
-          color: var(--text-muted);
-          font-size: 0.9rem;
-        }
-        .footer-contact span:first-child { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
-        .footer-contact a { color: var(--text-muted); transition: color 0.2s; }
-        .footer-contact a:hover { color: var(--primary); }
-        .footer-bottom {
-          border-top: 1px solid rgba(255,255,255,0.06);
-          padding: 24px 0;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 12px;
-        }
-        .footer-bottom p { color: var(--text-muted); font-size: 0.875rem; }
-        .footer-legal {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          color: var(--text-muted);
-          font-size: 0.875rem;
-        }
-        .footer-legal a { color: var(--text-muted); transition: color 0.2s; }
-        .footer-legal a:hover { color: var(--primary); }
-        @media (max-width: 900px) {
-          .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-        }
-        @media (max-width: 600px) {
-          .footer-grid { grid-template-columns: 1fr; }
-          .footer-bottom { flex-direction: column; text-align: center; }
-        }
-      `}</style>
-        </footer>
-    );
+        {/* Bottom Strip */}
+        <div className="footer-bottom">
+          <div className="footer-copyright">
+            Copyright © {new Date().getFullYear()}. All Rights Reserved
+          </div>
+
+          <div className="footer-socials">
+            {settings.instagram && (
+              <a href={settings.instagram} target="_blank" rel="noopener noreferrer">
+                <RiInstagramLine size={24} />
+              </a>
+            )}
+            {settings.twitter && (
+              <a href={settings.twitter} target="_blank" rel="noopener noreferrer">
+                <RiTwitterXLine size={24} />
+              </a>
+            )}
+            {settings.facebook && (
+              <a href={settings.facebook} target="_blank" rel="noopener noreferrer">
+                <RiFacebookFill size={24} />
+              </a>
+            )}
+          </div>
+
+          <div className="footer-legal">
+            <Link to={settings.privacy_link || '/privacy-policy'}>Privacy Policy</Link>
+            <span className="separator">|</span>
+            <Link to={settings.terms_link || '/terms'}>Terms & Conditions</Link>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+                .site-footer {
+                    background-color: #000000;
+                    color: #ffffff;
+                    padding-top: 80px;
+                    font-family: 'Inter', sans-serif;
+                }
+                .footer-content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .footer-top {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin-bottom: 60px;
+                    width: 100%;
+                }
+                .footer-logo {
+                    margin-bottom: 30px;
+                }
+                .logo-text {
+                    font-size: 4rem;
+                    font-weight: 800;
+                    letter-spacing: -0.02em;
+                    color: #ffffff;
+                }
+                .footer-logo img {
+                    height: 60px;
+                    width: auto;
+                }
+                .footer-contact-info {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 15px;
+                }
+                .contact-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    color: #ffffff;
+                    font-size: 0.95rem;
+                    font-weight: 300;
+                    letter-spacing: 0.01em;
+                }
+                .contact-item svg {
+                    color: #ffffff;
+                }
+                
+                .footer-bottom {
+                    width: 100%;
+                    border-top: 1px solid rgba(255, 255, 255, 0.1);
+                    padding: 30px 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                .footer-copyright {
+                    font-size: 0.75rem;
+                    color: #ffffff;
+                    font-weight: 300;
+                }
+                .footer-socials {
+                    display: flex;
+                    align-items: center;
+                    gap: 24px;
+                }
+                .footer-socials a {
+                    color: #ffffff;
+                    transition: opacity 0.2s ease;
+                    display: flex;
+                    align-items: center;
+                }
+                .footer-socials a:hover {
+                    opacity: 0.7;
+                }
+                .footer-legal {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 0.75rem;
+                    font-weight: 300;
+                }
+                .footer-legal a {
+                    color: #ffffff;
+                    text-decoration: none;
+                }
+                .footer-legal a:hover {
+                    text-decoration: underline;
+                }
+                .separator {
+                    color: rgba(255, 255, 255, 0.3);
+                }
+
+                @media (max-width: 768px) {
+                    .footer-bottom {
+                        flex-direction: column;
+                        gap: 24px;
+                        text-align: center;
+                    }
+                    .footer-copyright {
+                        order: 3;
+                    }
+                    .footer-socials {
+                        order: 1;
+                    }
+                    .footer-legal {
+                        order: 2;
+                    }
+                    .logo-text {
+                        font-size: 3rem;
+                    }
+                }
+            `}</style>
+    </footer>
+  );
 }

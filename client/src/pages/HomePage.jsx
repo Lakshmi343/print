@@ -41,11 +41,12 @@ export default function HomePage() {
             <Header data={data} />
             <main>
                 <HeroSection hero={data?.hero} highlights={data?.highlights} />
-                <CategoriesSection categories={data?.categories} />
-                <ServicesSection services={data?.services} />
-                <TestimonialsSection testimonials={data?.testimonials} />
+                <CategoriesSection categories={data?.categories} settings={data?.settings} />
+                <ServicesSection services={data?.services} settings={data?.settings} />
+                <TestimonialsSection testimonials={data?.testimonials} settings={data?.settings} />
                 <CTAPanel ctaButtons={data?.ctaButtons} settings={data?.settings} />
-                <Newsletter />
+                <Newsletter settings={data?.settings} />
+
             </main>
             <Footer data={data} />
         </>

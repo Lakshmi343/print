@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
+import MongoMessagesPage from './pages/MongoMessagesPage';
+import PlaceholderPage from './pages/PlaceholderPage';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './pages/admin/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
@@ -13,6 +15,7 @@ import CategoriesManager from './pages/admin/CategoriesManager';
 import ServicesManager from './pages/admin/ServicesManager';
 import TestimonialsManager from './pages/admin/TestimonialsManager';
 import CTAButtonsManager from './pages/admin/CTAButtonsManager';
+import FooterManager from './pages/admin/FooterManager';
 import NewsletterSubmissions from './pages/admin/NewsletterSubmissions';
 import './index.css';
 
@@ -28,6 +31,7 @@ function AppRoutes() {
       {/* Public */}
       <Route path="/" element={<HomePage />} />
       <Route path="/category/:slug" element={<CategoryPage />} />
+      <Route path="/mongo-page" element={<MongoMessagesPage />} />
 
       {/* Admin Login */}
       <Route path="/admin" element={<AdminLogin />} />
@@ -43,11 +47,12 @@ function AppRoutes() {
         <Route path="services" element={<ServicesManager />} />
         <Route path="testimonials" element={<TestimonialsManager />} />
         <Route path="cta-buttons" element={<CTAButtonsManager />} />
+        <Route path="footer" element={<FooterManager />} />
         <Route path="newsletter" element={<NewsletterSubmissions />} />
       </Route>
 
       {/* Fallback */}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<PlaceholderPage />} />
     </Routes>
   );
 }
